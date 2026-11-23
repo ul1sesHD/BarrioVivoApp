@@ -5,6 +5,10 @@ import com.mercacerca.barriovivo.data.local.TestimonioEntity
 
 /** Datos de ejemplo: los mismos de data/04_seed_barriovivo.sql. */
 object SeedData {
+    /** Solo para builds debug (ver DatabaseSeeder). Mismos usuarios del .sql. */
+    const val PASSWORD_DEMO = "mercado123"
+    val usuariosDemo = listOf("marce" to "#D90368", "donbeto" to "#5079B2", "sofia" to "#FC2F00")
+
     val testimonios = listOf(
         TestimonioEntity(1, "Marce", "Gracias a MercaCerca encontré el tianguis de mi colonia, ahora compro local cada semana."),
         TestimonioEntity(2, "Don Beto", "Soy marchante y llegó gente nueva que ni sabía que estábamos aquí. ¡Barrio vivo!"),

@@ -3,6 +3,7 @@ package com.mercacerca.barriovivo.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -33,7 +34,7 @@ fun PersonaAvatar(color: Color, modifier: Modifier = Modifier, size: Dp = 40.dp)
             imageVector = Icons.Filled.Person,
             contentDescription = null, // decorativo: el nombre va al lado
             tint = Color.White,
-            modifier = Modifier.padding(size / 6),
+            modifier = Modifier.fillMaxSize().padding(size / 6), // el ícono crece con el círculo
         )
     }
 }

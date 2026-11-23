@@ -15,7 +15,7 @@ import org.junit.Test
 class TianguisRepositoryTest {
 
     /** DAO falso en memoria: probamos el repositorio sin Room ni emulador. */
-    private class FakeDao(private val filas: List<TianguisEntity>) : TianguisDao {
+    class FakeDao(private val filas: List<TianguisEntity>) : TianguisDao {
         var ultimoDia: String? = null
         override fun observeConCoordenadasPorDia(dia: String): Flow<List<TianguisEntity>> {
             ultimoDia = dia
@@ -23,6 +23,7 @@ class TianguisRepositoryTest {
         }
         override fun observeConCoordenadas(): Flow<List<TianguisEntity>> = flowOf(filas.filter { it.lat != null })
         override fun observePorId(id: Int): Flow<TianguisEntity?> = flowOf(filas.firstOrNull { it.id == id })
+        override suspend fun ids() = filas.map { it.id }
         override suspend fun count() = filas.size
         override suspend fun insertAll(items: List<TianguisEntity>) = Unit
     }

@@ -8,6 +8,32 @@
     <string name="nav_mapa">Mapa</string>
     <string name="nav_cercanos">Cercanos</string>
     <string name="nav_viajes">Viajes</string>
+    <string name="nav_viajes_titulo">Tus viajes</string>
+
+    <string name="granjero_descripcion">Granjero con sombrero de paja</string>
+    <string name="granjero_sin_sesion">¡Quihubo, marchante! Inicia sesión y yo te llevo la cuenta del CO₂ que ahorras caminando al tianguis.</string>
+    <string name="granjero_sin_viajes">¡Bienvenido, @%s! Cuando vayas al tianguis a pie o en bici, súmalo desde la ficha y aquí te apunto lo que le ahorras al aire.</string>
+    <plurals name="granjero_gracias">
+        <item quantity="one">¡Gracias por comprar local, @%1$s! Con tu primera visita llevas %3$s kg de CO₂ que no salieron de un escape.</item>
+        <item quantity="other">¡Gracias por comprar local, @%1$s! Con tus %2$d visitas llevas %3$s kg de CO₂ que no salieron de un escape.</item>
+    </plurals>
+    <string name="viajes_ticket_encabezado">TICKET DE VIAJES · @%s</string>
+    <string name="viajes_vacio">Aún no hay viajes. En la ficha de un tianguis toca \"Voy caminando\".</string>
+    <string name="viajes_visitas">VISITAS</string>
+    <string name="viajes_km">KM A PIE (IDA Y VUELTA)</string>
+    <string name="viajes_total_co2">CO₂ AHORRADO</string>
+    <string name="viajes_nota_factor">Factor: %s kg de CO₂ por km que no hiciste en coche (auto a gasolina promedio). Distancia en línea recta, ida y vuelta.</string>
+
+    <string name="por_que_titulo">¿Por qué ir al mercado?</string>
+    <string name="por_que_granjero">¡Ándale, siéntate tantito! Te platico por qué vale la pena darse la vuelta al tianguis.</string>
+    <string name="por_que_1_titulo">Apoyas a los de aquí</string>
+    <string name="por_que_1_texto">Lo que pagas se queda con el productor y con el marchante de tu colonia, no con un intermediario.</string>
+    <string name="por_que_2_titulo">Menos vueltas, menos basura</string>
+    <string name="por_que_2_texto">La fruta viaja menos kilómetros y sin tanto empaque. Llévate tu bolsa de mandado y ya la hiciste.</string>
+    <string name="por_que_3_titulo">Más fresco, de temporada</string>
+    <string name="por_que_3_texto">Lo que se cosechó ayer hoy está en el puesto. Sabe a lo que tiene que saber.</string>
+    <string name="por_que_4_titulo">Trato de marchante</string>
+    <string name="por_que_4_texto">Te dan a probar, te dicen qué está bueno hoy y hasta te cae el pilón. Eso no te lo da el súper.</string>
     <string name="nav_perfil">Perfil</string>
 
     <string name="mapa_cerca_de_mi">Cerca de mí</string>
@@ -24,7 +50,19 @@
     <string name="atras">Atrás</string>
     <string name="ficha_no_existe">No encontramos este tianguis.</string>
     <string name="ficha_marcar_confianza">Marcar como tianguis de confianza</string>
-    <string name="ficha_confianza_requiere_sesion">Para marcarlo de confianza necesitas iniciar sesión. ¡Muy pronto!</string>
+    <string name="ficha_confianza_requiere_sesion">Para marcarlo de confianza necesitas iniciar sesión.</string>
+    <string name="ficha_iniciar_sesion">Iniciar sesión</string>
+    <string name="ficha_es_de_confianza">Es tu tianguis de confianza</string>
+    <string name="ficha_evaluar">Evaluar este tianguis</string>
+    <string name="viaje_voy_caminando">Voy caminando: súmalo a mi ticket</string>
+    <string name="viaje_sumar_en_dialogo">Voy caminando o en bici: súmalo a mi ticket de CO₂</string>
+    <string name="viaje_requiere_sesion">Para llevar tu ticket de viajes necesitas iniciar sesión.</string>
+    <string name="viaje_registrado">¡Sumaste %s kg de CO₂ ahorrado a tu ticket!</string>
+    <string name="viaje_ya_hoy">Este tianguis ya está en tu ticket de hoy.</string>
+    <string name="viaje_sin_ubicacion">Sin tu ubicación no podemos medir el viaje.</string>
+    <string name="viaje_ver_ticket">Ver ticket</string>
+    <string name="viaje_muy_lejos">Estás a %s: eso ya no es ir caminando, así que no lo sumamos.</string>
+    <string name="ficha_editar_evaluacion">Editar mi evaluación</string>
     <string name="ficha_resenas">Reseñas</string>
     <string name="ficha_sin_resenas">Aún no hay reseñas de este tianguis. ¡Ve y sé la primera persona en contarnos!</string>
     <plurals name="ficha_total_resenas">
@@ -37,6 +75,19 @@
     <string name="ficha_quieres_ir">¿Quieres ir a este tianguis?</string>
     <string name="ficha_si_vamos">¡Sí, vamos!</string>
     <string name="ficha_ahorita_no">Ahorita no</string>
+
+    <string name="evaluar_titulo">Evaluar</string>
+    <string name="evaluar_confianza">Tianguis de confianza</string>
+    <string name="evaluar_confianza_ayuda">Lo guardas en tu perfil y cuenta para el % de confianza.</string>
+    <string name="evaluar_comentario">Comentario (opcional)</string>
+    <string name="evaluar_guardar">Guardar evaluación</string>
+    <string name="evaluar_actualizar">Actualizar evaluación</string>
+    <string name="evaluar_requiere_sesion">Para evaluar un tianguis necesitas iniciar sesión.</string>
+    <string name="evaluar_err_falta">Falta calificar: %s.</string>
+    <string name="evaluar_err_largo">El comentario puede tener máximo %d caracteres.</string>
+    <string name="pregunta_variedad_ayuda">¿Qué tan surtido está? ¿Encuentras de todo?</string>
+    <string name="pregunta_tamano_ayuda">¿Qué tan grande es? ¿Cuántos puestos tiene?</string>
+    <string name="pregunta_calidad_ayuda">¿Qué tal la frescura y la calidad del producto?</string>
 
     <string name="pregunta_variedad">Variedad</string>
     <string name="pregunta_tamano">Tamaño</string>
@@ -62,7 +113,50 @@
     <string name="mejor_dia_explicacion">Tianguis a menos de %d km de ti, por día. Toca un día para ver sus tianguis.</string>
     <string name="mejor_dia_explicacion_zocalo">Tianguis a menos de %d km del Zócalo, por día (activa tu ubicación para verlo desde donde estás). Toca un día para ver sus tianguis.</string>
 
-    <string name="proximamente">¡Ahí viene!</string>
-    <string name="proximamente_viajes">Tu ticket de visitas y el CO₂ que ahorras caminando, muy pronto.</string>
-    <string name="proximamente_perfil">Tu perfil, tus reseñas y tus tianguis de confianza, muy pronto.</string>
+    <string name="cuenta_ticket_acceso">TICKET DE ACCESO</string>
+    <string name="cuenta_ticket_registro">TICKET DE REGISTRO</string>
+    <string name="cuenta_para_que">Para calificar, reseñar y marcar tus tianguis de confianza. Solo usuario y contraseña: sin correo ni teléfono.</string>
+    <string name="cuenta_usuario">Usuario</string>
+    <string name="cuenta_usuario_ayuda">%1$d a %2$d caracteres: letras, números, _ y .</string>
+    <string name="cuenta_password">Contraseña</string>
+    <string name="cuenta_password_ayuda">Mínimo %d caracteres</string>
+    <string name="cuenta_ver">Ver</string>
+    <string name="cuenta_ocultar">Ocultar</string>
+    <string name="cuenta_color">Color de tu ícono</string>
+    <string name="cuenta_entrar">Entrar</string>
+    <string name="cuenta_crear">Crear cuenta</string>
+    <string name="cuenta_no_tengo">¿No tienes cuenta? Regístrate</string>
+    <string name="cuenta_ya_tengo">¿Ya tienes cuenta? Inicia sesión</string>
+    <string name="cuenta_err_usuario_corto">El usuario debe tener al menos %d caracteres.</string>
+    <string name="cuenta_err_usuario_largo">El usuario puede tener máximo %d caracteres.</string>
+    <string name="cuenta_err_usuario_caracteres">Usa solo letras sin acento, números, guion bajo y punto.</string>
+    <string name="cuenta_err_password_corta">La contraseña debe tener al menos %d caracteres.</string>
+    <string name="cuenta_err_password_larga">La contraseña puede tener máximo %d caracteres.</string>
+    <string name="cuenta_err_password_igual">La contraseña no puede ser igual a tu usuario.</string>
+    <string name="cuenta_err_ocupado">Ese usuario ya existe. Prueba con otro.</string>
+    <string name="cuenta_err_credenciales">Usuario o contraseña incorrectos.</string>
+    <string name="cuenta_err_bloqueado">Demasiados intentos. Espera %d segundos.</string>
+    <string name="cuenta_err_sin_conexion">Para crear tu cuenta necesitas internet. Intenta de nuevo con conexión.</string>
+    <string name="cuenta_err_nube">La nube no respondió bien. Intenta en un momento.</string>
+
+    <string name="perfil_miembro_desde">En el barrio desde %s</string>
+    <plurals name="perfil_mis_favoritos">
+        <item quantity="one">Mi tianguis de confianza (%d)</item>
+        <item quantity="other">Mis tianguis de confianza (%d)</item>
+    </plurals>
+    <plurals name="perfil_mis_resenas">
+        <item quantity="one">Mi reseña (%d)</item>
+        <item quantity="other">Mis reseñas (%d)</item>
+    </plurals>
+    <string name="perfil_sin_favoritos">Aún no marcas ninguno. Abre la ficha de un tianguis y tócale al corazón.</string>
+    <string name="perfil_sin_resenas">Aún no evalúas ningún tianguis.</string>
+    <string name="perfil_mi_co2">Mi CO₂ ahorrado</string>
+    <plurals name="perfil_co2_resumen">
+        <item quantity="one">Llevas %1$s kg de CO₂ en %2$d visita. Ver mi ticket</item>
+        <item quantity="other">Llevas %1$s kg de CO₂ en %2$d visitas. Ver mi ticket</item>
+    </plurals>
+    <string name="perfil_sin_viajes">Aún no sumas viajes. En la ficha de un tianguis toca \"Voy caminando\".</string>
+    <string name="perfil_cerrar_sesion">Cerrar sesión</string>
+    <string name="perfil_privacidad">En este teléfono, de tu contraseña solo se guarda un hash PBKDF2 con salt: no se puede revertir y nunca se guarda en texto. Si la nube está activa, tus reseñas son públicas y tus favoritos y viajes solo los ves tú.</string>
+
 </resources>

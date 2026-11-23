@@ -2,6 +2,7 @@ package com.mercacerca.barriovivo
 
 import android.app.Application
 import com.mercacerca.barriovivo.data.seed.DatabaseSeeder
+import com.mercacerca.barriovivo.data.sync.SincronizadorNube
 import com.mercacerca.barriovivo.di.ApplicationScope
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
@@ -14,13 +15,18 @@ import javax.inject.Inject
 class BarrioVivoApp : Application() {
 
     @Inject lateinit var seeder: DatabaseSeeder
+    @Inject lateinit var sincronizador: SincronizadorNube
     @Inject @ApplicationScope lateinit var appScope: CoroutineScope
 
     override fun onCreate() {
         super.onCreate()
         configurarOsmdroid()
         // Carga los 1,325 tianguis a Room en segundo plano; las pantallas observan Flows y se pintan solas.
-        appScope.launch { seeder.seedIfEmpty() }
+        // Después, si hay nube, baja reseñas nuevas y sube lo pendiente (sin bloquear el arranque).
+        appScope.launch {
+            seeder.seedIfEmpty()
+            sincronizador.sincronizar()
+        }
     }
 
     private fun configurarOsmdroid() = Configuration.getInstance().apply {

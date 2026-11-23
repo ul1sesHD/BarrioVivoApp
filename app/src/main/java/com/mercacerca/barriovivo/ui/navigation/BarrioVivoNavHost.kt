@@ -25,9 +25,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mercacerca.barriovivo.R
 import com.mercacerca.barriovivo.ui.cercanos.CercanosScreen
+import com.mercacerca.barriovivo.ui.cuenta.CuentaScreen
+import com.mercacerca.barriovivo.ui.evaluar.EvaluarScreen
 import com.mercacerca.barriovivo.ui.ficha.FichaScreen
 import com.mercacerca.barriovivo.ui.map.MapScreen
-import com.mercacerca.barriovivo.ui.placeholder.ProximamenteScreen
+import com.mercacerca.barriovivo.ui.viajes.PorQueScreen
+import com.mercacerca.barriovivo.ui.viajes.ViajesScreen
 import com.mercacerca.barriovivo.ui.welcome.WelcomeScreen
 import kotlinx.serialization.Serializable
 
@@ -38,6 +41,8 @@ import kotlinx.serialization.Serializable
 @Serializable data object Viajes
 @Serializable data object Perfil
 @Serializable data class Ficha(val id: Int)
+@Serializable data class Evaluar(val tianguisId: Int)
+@Serializable data object PorQue
 
 private enum class Pestana(val ruta: Any, @StringRes val etiqueta: Int, val icono: ImageVector) {
     MAPA(Mapa, R.string.nav_mapa, Icons.Filled.Place),
@@ -68,13 +73,34 @@ fun BarrioVivoNavHost(nav: NavHostController = rememberNavController()) {
                 })
             }
             composable<Mapa> { MapScreen(contentPadding = padding, onAbrirFicha = { nav.navigate(Ficha(it.id)) }) }
-            composable<Ficha> { FichaScreen(onAtras = nav::navigateUp) }
+            composable<Ficha> {
+                FichaScreen(
+                    onAtras = nav::navigateUp,
+                    onIniciarSesion = { nav.irAPestana(Perfil) },
+                    onEvaluar = { nav.navigate(Evaluar(it)) },
+                    onVerViajes = { nav.irAPestana(Viajes) },
+                )
+            }
+            composable<Evaluar> {
+                EvaluarScreen(onListo = nav::navigateUp, onIniciarSesion = { nav.irAPestana(Perfil) })
+            }
             composable<Cercanos> { CercanosScreen(contentPadding = padding, onAbrirFicha = { nav.navigate(Ficha(it.id)) }) }
             composable<Viajes> {
-                ProximamenteScreen(R.string.nav_viajes, R.string.proximamente_viajes, padding, R.drawable.granjero)
+                ViajesScreen(
+                    contentPadding = padding,
+                    onPorQue = { nav.navigate(PorQue) },
+                    onIniciarSesion = { nav.irAPestana(Perfil) },
+                )
+            }
+            composable<PorQue> {
+                PorQueScreen(onAtras = nav::navigateUp, onBuscarTianguis = { nav.irAPestana(Cercanos) })
             }
             composable<Perfil> {
-                ProximamenteScreen(R.string.nav_perfil, R.string.proximamente_perfil, padding, R.drawable.bancos)
+                CuentaScreen(
+                    contentPadding = padding,
+                    onAbrirFicha = { nav.navigate(Ficha(it)) },
+                    onVerViajes = { nav.irAPestana(Viajes) },
+                )
             }
         }
     }

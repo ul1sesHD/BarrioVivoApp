@@ -1,6 +1,10 @@
 package com.mercacerca.barriovivo.ui.ficha
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,9 +24,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,12 +42,14 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +58,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
@@ -55,6 +68,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mercacerca.barriovivo.R
+import com.mercacerca.barriovivo.core.geo.Geo
+import com.mercacerca.barriovivo.core.location.FusedLocationProvider
 import com.mercacerca.barriovivo.core.ui.abrirComoLlegar
 import com.mercacerca.barriovivo.domain.model.Promedios
 import com.mercacerca.barriovivo.domain.model.Review
@@ -62,19 +77,28 @@ import com.mercacerca.barriovivo.domain.model.Tianguis
 import com.mercacerca.barriovivo.ui.components.Estrellas
 import com.mercacerca.barriovivo.ui.components.PersonaAvatar
 import com.mercacerca.barriovivo.ui.components.colorParaNombre
+import com.mercacerca.barriovivo.ui.theme.Ambar
 import com.mercacerca.barriovivo.ui.theme.Bermellon
 import kotlinx.coroutines.launch
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FichaScreen(onAtras: () -> Unit, viewModel: FichaViewModel = hiltViewModel()) {
+fun FichaScreen(
+    onAtras: () -> Unit,
+    onIniciarSesion: () -> Unit,
+    onEvaluar: (Int) -> Unit,
+    onVerViajes: () -> Unit,
+    viewModel: FichaViewModel = hiltViewModel(),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val sinMapas = stringResource(R.string.sin_app_mapas)
     val pideSesion = stringResource(R.string.ficha_confianza_requiere_sesion)
+    val accionSesion = stringResource(R.string.ficha_iniciar_sesion)
+    val pideSesionEvaluar = stringResource(R.string.evaluar_requiere_sesion)
 
     // El diálogo "¿Quieres ir?" sale una sola vez por visita (sobrevive a girar la pantalla).
     var preguntarSiVa by rememberSaveable { mutableStateOf(true) }
@@ -82,6 +106,41 @@ fun FichaScreen(onAtras: () -> Unit, viewModel: FichaViewModel = hiltViewModel()
     val irAlTianguis: (Tianguis) -> Unit = { t ->
         val ok = t.coordenadas?.let { context.abrirComoLlegar(it, t.titulo) } ?: false
         if (!ok) scope.launch { snackbar.showSnackbar(sinMapas) }
+    }
+
+    // Sumar un viaje necesita la ubicación (para medir la distancia): se pide justo aquí.
+    var abrirMapasDespues by rememberSaveable { mutableStateOf(false) }
+    val pedirUbicacion = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { r ->
+        viewModel.onRegistrarViaje(permisoConcedido = r.values.any { it })
+        if (abrirMapasDespues) {
+            abrirMapasDespues = false
+            state.tianguis?.let(irAlTianguis)
+        }
+    }
+    val pideSesionViaje = stringResource(R.string.viaje_requiere_sesion)
+    val sumarViaje: (abrirMapas: Boolean) -> Unit = { abrirMapas ->
+        if (state.conSesion) {
+            abrirMapasDespues = abrirMapas
+            pedirUbicacion.launch(FusedLocationProvider.PERMISOS)
+        } else scope.launch {
+            if (snackbar.showSnackbar(pideSesionViaje, actionLabel = accionSesion) == SnackbarResult.ActionPerformed) onIniciarSesion()
+        }
+    }
+
+    val textoAviso = when (val a = state.aviso) {
+        is AvisoViaje.Registrado -> stringResource(R.string.viaje_registrado, String.format(Locale.US, "%.2f", a.co2Kg))
+        AvisoViaje.YaHoy -> stringResource(R.string.viaje_ya_hoy)
+        AvisoViaje.SinUbicacion -> stringResource(R.string.viaje_sin_ubicacion)
+        is AvisoViaje.MuyLejos -> stringResource(R.string.viaje_muy_lejos, Geo.formatearDistancia(a.km / 2))
+        null -> null
+    }
+    val verTicket = stringResource(R.string.viaje_ver_ticket)
+    LaunchedEffect(state.aviso) {
+        val a = state.aviso ?: return@LaunchedEffect
+        val accion = if (a is AvisoViaje.Registrado) verTicket else null
+        val r = snackbar.showSnackbar(textoAviso.orEmpty(), actionLabel = accion, duration = SnackbarDuration.Long)
+        viewModel.onAvisoMostrado()
+        if (r == SnackbarResult.ActionPerformed) onVerViajes()
     }
 
     Scaffold(
@@ -110,12 +169,31 @@ fun FichaScreen(onAtras: () -> Unit, viewModel: FichaViewModel = hiltViewModel()
                     reviews = state.reviews,
                     padding = padding,
                     onComoLlegar = { irAlTianguis(t) },
-                    onConfianza = { scope.launch { snackbar.showSnackbar(pideSesion) } },
+                    esDeConfianza = state.esDeConfianza,
+                    yaLoEvalue = state.yaLoEvalue,
+                    // Sin sesión: aviso con botón "Iniciar sesión" (anónimo puede ver, no calificar).
+                    onConfianza = {
+                        if (state.conSesion) viewModel.onAlternarConfianza()
+                        else scope.launch {
+                            if (snackbar.showSnackbar(pideSesion, actionLabel = accionSesion) == SnackbarResult.ActionPerformed) onIniciarSesion()
+                        }
+                    },
+                    onSumarViaje = { sumarViaje(false) },
+                    onEvaluar = {
+                        if (state.conSesion) onEvaluar(t.id)
+                        else scope.launch {
+                            if (snackbar.showSnackbar(pideSesionEvaluar, actionLabel = accionSesion) == SnackbarResult.ActionPerformed) onIniciarSesion()
+                        }
+                    },
                 )
                 if (preguntarSiVa && t.coordenadas != null) {
                     DialogoQuieresIr(
                         tianguis = t,
-                        onSi = { preguntarSiVa = false; irAlTianguis(t) },
+                        conSesion = state.conSesion,
+                        onSi = { sumar ->
+                            preguntarSiVa = false
+                            if (sumar) sumarViaje(true) else irAlTianguis(t)
+                        },
                         onNo = { preguntarSiVa = false },
                     )
                 }
@@ -130,8 +208,12 @@ private fun ContenidoFicha(
     promedios: Promedios,
     reviews: List<Review>,
     padding: PaddingValues,
+    esDeConfianza: Boolean,
+    yaLoEvalue: Boolean,
     onComoLlegar: () -> Unit,
     onConfianza: () -> Unit,
+    onEvaluar: () -> Unit,
+    onSumarViaje: () -> Unit,
 ) {
     LazyColumn(
         contentPadding = PaddingValues(
@@ -154,13 +236,44 @@ private fun ContenidoFicha(
                     Text(stringResource(R.string.ficha_como_llegar), style = MaterialTheme.typography.titleLarge)
                 }
                 OutlinedButton(
-                    onClick = onConfianza,
+                    onClick = onEvaluar,
                     border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
                     modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
                 ) {
-                    Icon(Icons.Filled.Favorite, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                    Icon(Icons.Filled.Star, contentDescription = null, tint = Ambar)
                     Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.ficha_marcar_confianza), color = MaterialTheme.colorScheme.onBackground)
+                    Text(
+                        stringResource(if (yaLoEvalue) R.string.ficha_editar_evaluacion else R.string.ficha_evaluar),
+                        color = MaterialTheme.colorScheme.onBackground,
+                    )
+                }
+                // Marcado = relleno rosa con corazón lleno; sin marcar = contorno con corazón vacío.
+                OutlinedButton(
+                    onClick = onConfianza,
+                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
+                    colors = if (esDeConfianza) ButtonDefaults.outlinedButtonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                    ) else ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onBackground),
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                ) {
+                    Icon(
+                        if (esDeConfianza) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        contentDescription = null,
+                        tint = if (esDeConfianza) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary,
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(if (esDeConfianza) R.string.ficha_es_de_confianza else R.string.ficha_marcar_confianza))
+                }
+                OutlinedButton(
+                    onClick = onSumarViaje,
+                    enabled = tianguis.coordenadas != null,
+                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                ) {
+                    Icon(Icons.Filled.ShoppingCart, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.viaje_voy_caminando), color = MaterialTheme.colorScheme.onBackground)
                 }
             }
         }
@@ -237,7 +350,7 @@ private fun FilaPromedio(etiqueta: String, valor: Double) {
 private fun TarjetaReview(r: Review) {
     Cartel {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            PersonaAvatar(colorParaNombre(r.autor), size = 36.dp)
+            PersonaAvatar(r.colorArgb?.let { Color(it) } ?: colorParaNombre(r.autor), size = 36.dp)
             Spacer(Modifier.width(8.dp))
             Column(Modifier.weight(1f)) {
                 Text(r.autor.uppercase(), style = MaterialTheme.typography.titleLarge, color = Bermellon)
@@ -267,12 +380,27 @@ private fun SinReviews() {
 }
 
 @Composable
-private fun DialogoQuieresIr(tianguis: Tianguis, onSi: () -> Unit, onNo: () -> Unit) {
+private fun DialogoQuieresIr(tianguis: Tianguis, conSesion: Boolean, onSi: (sumarViaje: Boolean) -> Unit, onNo: () -> Unit) {
+    var sumar by rememberSaveable { mutableStateOf(false) }
     AlertDialog(
         onDismissRequest = onNo,
         title = { Text(stringResource(R.string.ficha_quieres_ir), style = MaterialTheme.typography.headlineMedium) },
-        text = { Text(tianguis.titulo, style = MaterialTheme.typography.bodyLarge) },
-        confirmButton = { Button(onClick = onSi) { Text(stringResource(R.string.ficha_si_vamos)) } },
+        text = {
+            Column {
+                Text(tianguis.titulo, style = MaterialTheme.typography.bodyLarge)
+                // Solo con sesión: el viaje se guarda en tu ticket personal.
+                if (conSesion) Row(
+                    Modifier.fillMaxWidth().padding(top = 8.dp)
+                        .toggleable(value = sumar, role = Role.Checkbox, onValueChange = { sumar = it }),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Checkbox(checked = sumar, onCheckedChange = null)
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.viaje_sumar_en_dialogo), style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        },
+        confirmButton = { Button(onClick = { onSi(sumar) }) { Text(stringResource(R.string.ficha_si_vamos)) } },
         dismissButton = { TextButton(onClick = onNo) { Text(stringResource(R.string.ficha_ahorita_no)) } },
     )
 }
