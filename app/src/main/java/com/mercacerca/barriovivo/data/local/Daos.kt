@@ -15,6 +15,9 @@ interface TianguisDao {
     )
     fun observeConCoordenadasPorDia(dia: String): Flow<List<TianguisEntity>>
 
+    @Query("SELECT * FROM tianguis WHERE id = :id")
+    fun observePorId(id: Int): Flow<TianguisEntity?>
+
     @Query("SELECT COUNT(*) FROM tianguis")
     suspend fun count(): Int
 
@@ -32,4 +35,16 @@ interface TestimonioDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(items: List<TestimonioEntity>)
+}
+
+@Dao
+interface ReviewDao {
+    @Query("SELECT * FROM review WHERE tianguis_id = :tianguisId ORDER BY creado_en DESC, id DESC")
+    fun observePorTianguis(tianguisId: Int): Flow<List<ReviewEntity>>
+
+    @Query("SELECT COUNT(*) FROM review")
+    suspend fun count(): Int
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(items: List<ReviewEntity>)
 }

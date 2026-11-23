@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mercacerca.barriovivo.R
+import com.mercacerca.barriovivo.ui.ficha.FichaScreen
 import com.mercacerca.barriovivo.ui.map.MapScreen
 import com.mercacerca.barriovivo.ui.placeholder.ProximamenteScreen
 import com.mercacerca.barriovivo.ui.welcome.WelcomeScreen
@@ -35,6 +36,7 @@ import kotlinx.serialization.Serializable
 @Serializable data object Cercanos
 @Serializable data object Viajes
 @Serializable data object Perfil
+@Serializable data class Ficha(val id: Int)
 
 private enum class Pestana(val ruta: Any, @StringRes val etiqueta: Int, val icono: ImageVector) {
     MAPA(Mapa, R.string.nav_mapa, Icons.Filled.Place),
@@ -47,11 +49,12 @@ private enum class Pestana(val ruta: Any, @StringRes val etiqueta: Int, val icon
 fun BarrioVivoNavHost(nav: NavHostController = rememberNavController()) {
     val entrada by nav.currentBackStackEntryAsState()
     val destino = entrada?.destination
-    val enBienvenida = destino == null || destino.hasRoute(Bienvenida::class)
+    // La barra inferior solo aparece en las 4 pestañas (no en Bienvenida ni en la Ficha).
+    val enPestana = destino != null && Pestana.entries.any { destino.hasRoute(it.ruta::class) }
 
     Scaffold(
         bottomBar = {
-            if (!enBienvenida) BarraInferior(
+            if (enPestana) BarraInferior(
                 esActual = { p -> destino.hasRoute(p.ruta::class) },
                 onClick = { p -> nav.irAPestana(p.ruta) },
             )
@@ -63,7 +66,8 @@ fun BarrioVivoNavHost(nav: NavHostController = rememberNavController()) {
                     nav.navigate(Mapa) { popUpTo(Bienvenida) { inclusive = true } }
                 })
             }
-            composable<Mapa> { MapScreen(contentPadding = padding) }
+            composable<Mapa> { MapScreen(contentPadding = padding, onAbrirFicha = { nav.navigate(Ficha(it.id)) }) }
+            composable<Ficha> { FichaScreen(onAtras = nav::navigateUp) }
             composable<Cercanos> { ProximamenteScreen(R.string.nav_cercanos, R.string.proximamente_cercanos, padding) }
             composable<Viajes> {
                 ProximamenteScreen(R.string.nav_viajes, R.string.proximamente_viajes, padding, R.drawable.granjero)

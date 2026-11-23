@@ -34,6 +34,10 @@ class DatabaseSeeder @Inject constructor(
             if (db.testimonioDao().count() == 0) {
                 db.testimonioDao().insertAll(SeedData.testimonios)
             }
+            // Después de los tianguis: cada reseña apunta a un tianguis (llave foránea).
+            if (db.reviewDao().count() == 0) {
+                db.reviewDao().insertAll(SeedData.reviews)
+            }
         }
     }
 

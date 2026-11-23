@@ -20,7 +20,27 @@
     <string name="ficha_como_llegar">¿Cómo llegar?</string>
     <string name="ficha_horario">%1$s – %2$s</string>
     <string name="ficha_sin_horario">Horario sin confirmar</string>
-    <string name="ficha_cerrar">Cerrar</string>
+    <string name="ficha_titulo">Ficha del tianguis</string>
+    <string name="atras">Atrás</string>
+    <string name="ficha_no_existe">No encontramos este tianguis.</string>
+    <string name="ficha_marcar_confianza">Marcar como tianguis de confianza</string>
+    <string name="ficha_confianza_requiere_sesion">Para marcarlo de confianza necesitas iniciar sesión. ¡Muy pronto!</string>
+    <string name="ficha_resenas">Reseñas</string>
+    <string name="ficha_sin_resenas">Aún no hay reseñas de este tianguis. ¡Ve y sé la primera persona en contarnos!</string>
+    <plurals name="ficha_total_resenas">
+        <item quantity="one">%d reseña</item>
+        <item quantity="other">%d reseñas</item>
+    </plurals>
+    <string name="ficha_pct_confianza">%d%% lo marcan de confianza</string>
+    <string name="ficha_de_confianza">De confianza</string>
+    <string name="ficha_desglose">Variedad %1$d · Tamaño %2$d · Calidad %3$d</string>
+    <string name="ficha_quieres_ir">¿Quieres ir a este tianguis?</string>
+    <string name="ficha_si_vamos">¡Sí, vamos!</string>
+    <string name="ficha_ahorita_no">Ahorita no</string>
+
+    <string name="pregunta_variedad">Variedad</string>
+    <string name="pregunta_tamano">Tamaño</string>
+    <string name="pregunta_calidad">Calidad</string>
     <string name="sin_app_mapas">No encontramos una app de mapas.</string>
 
     <string name="proximamente">¡Ahí viene!</string>

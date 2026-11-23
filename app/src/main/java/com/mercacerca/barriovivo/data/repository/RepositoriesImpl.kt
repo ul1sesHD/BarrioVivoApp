@@ -1,12 +1,15 @@
 package com.mercacerca.barriovivo.data.repository
 
 import com.mercacerca.barriovivo.core.geo.LatLon
+import com.mercacerca.barriovivo.data.local.ReviewDao
 import com.mercacerca.barriovivo.data.local.TestimonioDao
 import com.mercacerca.barriovivo.data.local.TianguisDao
 import com.mercacerca.barriovivo.data.local.TianguisEntity
 import com.mercacerca.barriovivo.domain.model.Dia
+import com.mercacerca.barriovivo.domain.model.Review
 import com.mercacerca.barriovivo.domain.model.Testimonio
 import com.mercacerca.barriovivo.domain.model.Tianguis
+import com.mercacerca.barriovivo.domain.repository.ReviewRepository
 import com.mercacerca.barriovivo.domain.repository.TestimonioRepository
 import com.mercacerca.barriovivo.domain.repository.TianguisRepository
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +21,17 @@ class TianguisRepositoryImpl @Inject constructor(
 ) : TianguisRepository {
     override fun observeMapeablesPorDia(dia: Dia): Flow<List<Tianguis>> =
         dao.observeConCoordenadasPorDia(dia.name).map { lista -> lista.mapNotNull { it.toDomain() } }
+
+    override fun observePorId(id: Int): Flow<Tianguis?> = dao.observePorId(id).map { it?.toDomain() }
+}
+
+class ReviewRepositoryImpl @Inject constructor(
+    private val dao: ReviewDao,
+) : ReviewRepository {
+    override fun observePorTianguis(tianguisId: Int): Flow<List<Review>> =
+        dao.observePorTianguis(tianguisId).map { lista ->
+            lista.map { Review(it.id, it.tianguisId, it.autor, it.variedad, it.tamano, it.calidad, it.confianza, it.comentario) }
+        }
 }
 
 class TestimonioRepositoryImpl @Inject constructor(

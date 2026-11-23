@@ -21,6 +21,7 @@ class TianguisRepositoryTest {
             ultimoDia = dia
             return flowOf(filas.filter { it.dia == dia && it.lat != null && it.lon != null })
         }
+        override fun observePorId(id: Int): Flow<TianguisEntity?> = flowOf(filas.firstOrNull { it.id == id })
         override suspend fun count() = filas.size
         override suspend fun insertAll(items: List<TianguisEntity>) = Unit
     }
@@ -42,5 +43,11 @@ class TianguisRepositoryTest {
         val r = TianguisRepositoryImpl(FakeDao(listOf(fila(2, "LUNES")))).observeMapeablesPorDia(Dia.LUNES).first()
         assertNull(r.single().nombre)
         assertEquals("Calle 2", r.single().titulo)
+    }
+
+    @Test fun `por id devuelve el tianguis o null`() = runTest {
+        val repo = TianguisRepositoryImpl(FakeDao(listOf(fila(5, "MIERCOLES"))))
+        assertEquals(Dia.MIERCOLES, repo.observePorId(5).first()?.dia)
+        assertNull(repo.observePorId(999).first())
     }
 }

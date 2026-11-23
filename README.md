@@ -42,7 +42,7 @@ data/04_seed_barriovivo.sql           # esquema de referencia + notas para Supab
 
 ## Fases
 - [x] **1** · Proyecto base, tema, Room + carga del JSON, Hilt, navegación, **Bienvenida** (comentarios flotantes) y **Mapa**
-- [ ] **2** · Ficha del tianguis + diálogo "¿Quieres ir?" + cómo llegar
+- [x] **2** · Ficha del tianguis (promedios + reseñas seed) + diálogo "¿Quieres ir?" + cómo llegar
 - [ ] **3** · Lista de cercanos (Haversine) + "Mejor día" (radio 2 km)
 - [ ] **4** · Registro/Login (PBKDF2 + salt) con estética de ticket + Perfil
 - [ ] **5** · Evaluar (variedad/tamaño/calidad + de confianza) y favoritos

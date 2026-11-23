@@ -29,7 +29,6 @@ data class MapUiState(
     val dia: Dia = Dia.hoy(),
     val tianguis: List<Tianguis> = emptyList(),
     val cargando: Boolean = true,
-    val seleccionado: Tianguis? = null,
     val miUbicacion: LatLon? = null,
     val camara: OrdenCamara? = null,
     val buscandoUbicacion: Boolean = false,
@@ -55,9 +54,7 @@ class MapViewModel @Inject constructor(
         }
     }
 
-    fun onDiaSeleccionado(dia: Dia) = _state.update { it.copy(dia = dia, seleccionado = null) }
-
-    fun onTianguisSeleccionado(t: Tianguis?) = _state.update { it.copy(seleccionado = t) }
+    fun onDiaSeleccionado(dia: Dia) = _state.update { it.copy(dia = dia) }
 
     fun onMensajeMostrado() = _state.update { it.copy(mensaje = null) }
 
