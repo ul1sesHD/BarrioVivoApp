@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pin rosa mexicano con borde azul noche y punto amarillo. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="22dp"
+    android:height="28dp"
+    android:viewportWidth="32"
+    android:viewportHeight="40">
+    <path
+        android:fillColor="#FFD90368"
+        android:strokeColor="#FF03071E"
+        android:strokeWidth="2"
+        android:pathData="M16,2C8.3,2 2,8.1 2,15.8C2,26 16,38 16,38C16,38 30,26 30,15.8C30,8.1 23.7,2 16,2Z" />
+    <path
+        android:fillColor="#FFFFD100"
+        android:strokeColor="#FF03071E"
+        android:strokeWidth="1.5"
+        android:pathData="M16,10.5a5.5,5.5 0,1 1,0 11a5.5,5.5 0,1 1,0 -11Z" />
+</vector>

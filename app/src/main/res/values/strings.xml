@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Barrio Vivo</string>
+
+    <string name="cta_encuentra_mercado">Encuentra un mercado cerca de mí</string>
+    <string name="bienvenida_lema">El tianguis de tu barrio, a un toque.</string>
+
+    <string name="nav_mapa">Mapa</string>
+    <string name="nav_cercanos">Cercanos</string>
+    <string name="nav_viajes">Viajes</string>
+    <string name="nav_perfil">Perfil</string>
+
+    <string name="mapa_cerca_de_mi">Cerca de mí</string>
+    <string name="mapa_conteo">%1$d tianguis el %2$s</string>
+    <string name="mapa_cargando">Cargando tianguis…</string>
+    <string name="mapa_sin_permiso">Sin permiso de ubicación: te centramos en el Zócalo.</string>
+    <string name="mapa_sin_ubicacion">No pudimos obtener tu ubicación. Revisa que el GPS esté prendido.</string>
+    <string name="mapa_osm_credito">© OpenStreetMap</string>
+
+    <string name="ficha_como_llegar">¿Cómo llegar?</string>
+    <string name="ficha_horario">%1$s – %2$s</string>
+    <string name="ficha_sin_horario">Horario sin confirmar</string>
+    <string name="ficha_cerrar">Cerrar</string>
+    <string name="sin_app_mapas">No encontramos una app de mapas.</string>
+
+    <string name="proximamente">¡Ahí viene!</string>
+    <string name="proximamente_cercanos">La lista de tianguis ordenada por distancia llega en la siguiente fase.</string>
+    <string name="proximamente_viajes">Tu ticket de visitas y el CO₂ que ahorras caminando, muy pronto.</string>
+    <string name="proximamente_perfil">Tu perfil, tus reseñas y tus tianguis de confianza, muy pronto.</string>
+</resources>

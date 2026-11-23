@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.BarrioVivo" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/azul_noche</item>
+    </style>
+
+    <style name="Theme.BarrioVivo.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/azul_noche</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/blanco</item>
+        <item name="postSplashScreenTheme">@style/Theme.BarrioVivo</item>
+    </style>
+</resources>

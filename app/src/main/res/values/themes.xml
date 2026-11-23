@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema base: Compose pinta todo; esto solo cubre la ventana. -->
+    <style name="Theme.BarrioVivo" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/amarillo</item>
+    </style>
+
+    <!-- Splash (core-splashscreen, funciona de API 24 en adelante). -->
+    <style name="Theme.BarrioVivo.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/amarillo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/blanco</item>
+        <item name="postSplashScreenTheme">@style/Theme.BarrioVivo</item>
+    </style>
+</resources>

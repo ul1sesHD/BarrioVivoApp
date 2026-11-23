@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Solo para XML (ventana, splash, ícono). En Compose usa ui/theme/Color.kt -->
+    <color name="amarillo">#FFFFD100</color>
+    <color name="azul_noche">#FF03071E</color>
+    <color name="rosa_mexicano">#FFD90368</color>
+    <color name="blanco">#FFFFFFFF</color>
+</resources>

@@ -1,1 +1,19 @@
-/
+# --- Android Studio / Gradle ---
+.gradle/
+build/
+/app/build/
+/captures/
+.externalNativeBuild/
+.cxx/
+*.iml
+.idea/
+.kotlin/
+.DS_Store
+
+# --- Archivos locales y secretos (NUNCA al repo) ---
+local.properties
+secrets.properties
+.env
+*.jks
+*.keystore
+google-services.json
