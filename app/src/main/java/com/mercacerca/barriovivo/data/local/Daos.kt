@@ -15,6 +15,9 @@ interface TianguisDao {
     )
     fun observeConCoordenadasPorDia(dia: String): Flow<List<TianguisEntity>>
 
+    @Query("SELECT * FROM tianguis WHERE lat IS NOT NULL AND lon IS NOT NULL")
+    fun observeConCoordenadas(): Flow<List<TianguisEntity>>
+
     @Query("SELECT * FROM tianguis WHERE id = :id")
     fun observePorId(id: Int): Flow<TianguisEntity?>
 

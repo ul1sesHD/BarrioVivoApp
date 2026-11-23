@@ -21,6 +21,7 @@ class TianguisRepositoryTest {
             ultimoDia = dia
             return flowOf(filas.filter { it.dia == dia && it.lat != null && it.lon != null })
         }
+        override fun observeConCoordenadas(): Flow<List<TianguisEntity>> = flowOf(filas.filter { it.lat != null })
         override fun observePorId(id: Int): Flow<TianguisEntity?> = flowOf(filas.firstOrNull { it.id == id })
         override suspend fun count() = filas.size
         override suspend fun insertAll(items: List<TianguisEntity>) = Unit

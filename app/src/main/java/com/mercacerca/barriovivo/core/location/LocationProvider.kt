@@ -9,9 +9,15 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
 import com.mercacerca.barriovivo.core.geo.LatLon
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.tasks.await
 
 interface LocationProvider {
+    /** Última ubicación obtenida en esta sesión; la comparten Mapa y Cercanos. */
+    val ultimaConocida: StateFlow<LatLon?>
+
     fun tienePermiso(): Boolean
 
     /** Ubicación actual, o null si no hay permiso / GPS apagado / error. Nunca lanza. */
@@ -23,6 +29,9 @@ class FusedLocationProvider(
     private val client: FusedLocationProviderClient,
 ) : LocationProvider {
 
+    private val ultima = MutableStateFlow<LatLon?>(null)
+    override val ultimaConocida: StateFlow<LatLon?> = ultima.asStateFlow()
+
     override fun tienePermiso(): Boolean = PERMISOS.any {
         ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
     }
@@ -33,7 +42,7 @@ class FusedLocationProvider(
         return try {
             val loc = client.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, null).await()
                 ?: client.lastLocation.await()
-            loc?.let { LatLon(it.latitude, it.longitude) }
+            loc?.let { LatLon(it.latitude, it.longitude) }?.also { ultima.value = it }
         } catch (e: CancellationException) {
             throw e // nunca tragarse la cancelación de la corrutina
         } catch (_: Exception) {

@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mercacerca.barriovivo.R
+import com.mercacerca.barriovivo.ui.cercanos.CercanosScreen
 import com.mercacerca.barriovivo.ui.ficha.FichaScreen
 import com.mercacerca.barriovivo.ui.map.MapScreen
 import com.mercacerca.barriovivo.ui.placeholder.ProximamenteScreen
@@ -68,7 +69,7 @@ fun BarrioVivoNavHost(nav: NavHostController = rememberNavController()) {
             }
             composable<Mapa> { MapScreen(contentPadding = padding, onAbrirFicha = { nav.navigate(Ficha(it.id)) }) }
             composable<Ficha> { FichaScreen(onAtras = nav::navigateUp) }
-            composable<Cercanos> { ProximamenteScreen(R.string.nav_cercanos, R.string.proximamente_cercanos, padding) }
+            composable<Cercanos> { CercanosScreen(contentPadding = padding, onAbrirFicha = { nav.navigate(Ficha(it.id)) }) }
             composable<Viajes> {
                 ProximamenteScreen(R.string.nav_viajes, R.string.proximamente_viajes, padding, R.drawable.granjero)
             }

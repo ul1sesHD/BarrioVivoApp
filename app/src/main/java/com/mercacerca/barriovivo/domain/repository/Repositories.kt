@@ -12,6 +12,9 @@ interface TianguisRepository {
     /** Tianguis de un día que SÍ tienen coordenadas (los que se pueden pintar). */
     fun observeMapeablesPorDia(dia: Dia): Flow<List<Tianguis>>
 
+    /** Todos los tianguis con coordenadas, de todos los días (para "Mejor día"). */
+    fun observeMapeables(): Flow<List<Tianguis>>
+
     /** Emite null si el id no existe. */
     fun observePorId(id: Int): Flow<Tianguis?>
 }

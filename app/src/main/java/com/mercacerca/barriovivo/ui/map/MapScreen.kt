@@ -8,23 +8,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,8 +31,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mercacerca.barriovivo.R
 import com.mercacerca.barriovivo.core.location.FusedLocationProvider
-import com.mercacerca.barriovivo.domain.model.Dia
 import com.mercacerca.barriovivo.domain.model.Tianguis
+import com.mercacerca.barriovivo.ui.components.SelectorDia
 import com.mercacerca.barriovivo.ui.theme.AzulNoche
 
 @Composable
@@ -76,9 +69,9 @@ fun MapScreen(
 
         SelectorDia(
             seleccionado = state.dia,
-            conteo = state.tianguis.size,
-            cargando = state.cargando,
             onDia = viewModel::onDiaSeleccionado,
+            subtitulo = if (state.cargando) stringResource(R.string.mapa_cargando)
+            else stringResource(R.string.mapa_conteo, state.tianguis.size, state.dia.largo),
             modifier = Modifier.align(Alignment.TopCenter),
         )
 
@@ -106,51 +99,5 @@ fun MapScreen(
             color = AzulNoche,
             modifier = Modifier.align(Alignment.BottomStart).padding(4.dp),
         )
-    }
-}
-
-/** Barra amarilla con chips Lun…Dom y cuántos tianguis hay ese día. */
-@Composable
-private fun SelectorDia(
-    seleccionado: Dia,
-    conteo: Int,
-    cargando: Boolean,
-    onDia: (Dia) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Surface(modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.background, shadowElevation = 4.dp) {
-        Column(Modifier.statusBarsPadding().padding(vertical = 8.dp)) {
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                items(Dia.entries) { dia ->
-                    FilterChip(
-                        selected = dia == seleccionado,
-                        onClick = { onDia(dia) },
-                        label = { Text(dia.corto.uppercase(), style = MaterialTheme.typography.titleLarge) },
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.primary,
-                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
-                        ),
-                        border = FilterChipDefaults.filterChipBorder(
-                            enabled = true,
-                            selected = dia == seleccionado,
-                            borderColor = MaterialTheme.colorScheme.outline,
-                            borderWidth = 2.dp,
-                            selectedBorderWidth = 2.dp,
-                            selectedBorderColor = MaterialTheme.colorScheme.outline,
-                        ),
-                        modifier = Modifier.height(48.dp),
-                    )
-                }
-            }
-            Text(
-                text = if (cargando) stringResource(R.string.mapa_cargando)
-                else stringResource(R.string.mapa_conteo, conteo, seleccionado.largo),
-                style = MaterialTheme.typography.labelLarge,
-                modifier = Modifier.padding(start = 16.dp, top = 4.dp),
-            )
-        }
     }
 }

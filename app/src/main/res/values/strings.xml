@@ -43,8 +43,26 @@
     <string name="pregunta_calidad">Calidad</string>
     <string name="sin_app_mapas">No encontramos una app de mapas.</string>
 
+    <string name="cercanos_desde_ti">%1$d tianguis el %2$s · desde tu ubicación</string>
+    <string name="cercanos_desde_zocalo">%1$d tianguis el %2$s · distancias desde el Zócalo</string>
+    <string name="cercanos_activa_ubicacion">Activa tu ubicación para ordenarlos desde donde estás. Mientras, medimos desde el Zócalo.</string>
+    <string name="cercanos_usar_mi_ubicacion">Usar mi ubicación</string>
+    <string name="cercanos_sin_permiso">Sin permiso de ubicación: medimos desde el Zócalo.</string>
+    <string name="cercanos_minutos">≈ %d min a pie</string>
+    <string name="cercanos_lejos">mejor en camión</string>
+
+    <string name="mejor_dia">Mejor día</string>
+    <string name="mejor_dia_titulo">Tu mejor día: %s</string>
+    <plurals name="mejor_dia_conteo">
+        <item quantity="one">%1$d tianguis a menos de %2$d km</item>
+        <item quantity="other">%1$d tianguis a menos de %2$d km</item>
+    </plurals>
+    <string name="mejor_dia_ninguno">No hay tianguis a menos de %d km. ¡Échale un ojo al mapa!</string>
+    <string name="mejor_dia_ver">Ver cuántos hay cada día ›</string>
+    <string name="mejor_dia_explicacion">Tianguis a menos de %d km de ti, por día. Toca un día para ver sus tianguis.</string>
+    <string name="mejor_dia_explicacion_zocalo">Tianguis a menos de %d km del Zócalo, por día (activa tu ubicación para verlo desde donde estás). Toca un día para ver sus tianguis.</string>
+
     <string name="proximamente">¡Ahí viene!</string>
-    <string name="proximamente_cercanos">La lista de tianguis ordenada por distancia llega en la siguiente fase.</string>
     <string name="proximamente_viajes">Tu ticket de visitas y el CO₂ que ahorras caminando, muy pronto.</string>
     <string name="proximamente_perfil">Tu perfil, tus reseñas y tus tianguis de confianza, muy pronto.</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.mercacerca.barriovivo.core.geo
 
+import java.util.Locale
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.pow
@@ -23,5 +24,12 @@ object Geo {
         val h = sin(dLat / 2).pow(2) +
             cos(Math.toRadians(a.lat)) * cos(Math.toRadians(b.lat)) * sin(dLon / 2).pow(2)
         return 2 * RADIO_TIERRA_KM * asin(sqrt(h.coerceIn(0.0, 1.0)))
+    }
+
+    /** "850 m" (redondeado a 10 m), "1.2 km" o, de 10 km en adelante, "37 km". */
+    fun formatearDistancia(km: Double): String = when {
+        km < 1.0 -> "${(Math.round(km * 100) * 10).coerceAtLeast(10)} m"
+        km < 10.0 -> String.format(Locale.US, "%.1f km", km)
+        else -> "${Math.round(km)} km"
     }
 }

@@ -22,6 +22,9 @@ class TianguisRepositoryImpl @Inject constructor(
     override fun observeMapeablesPorDia(dia: Dia): Flow<List<Tianguis>> =
         dao.observeConCoordenadasPorDia(dia.name).map { lista -> lista.mapNotNull { it.toDomain() } }
 
+    override fun observeMapeables(): Flow<List<Tianguis>> =
+        dao.observeConCoordenadas().map { lista -> lista.mapNotNull { it.toDomain() } }
+
     override fun observePorId(id: Int): Flow<Tianguis?> = dao.observePorId(id).map { it?.toDomain() }
 }
 
